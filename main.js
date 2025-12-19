@@ -1,7 +1,6 @@
 const inActivityThreshold = 3000;
 let timerId = null;
 
-
 let state = localStorage.getItem('state');
 
 if (state == null) {
@@ -11,14 +10,13 @@ if (state == null) {
     state = JSON.parse(state);
 }
 
-
 function increment() {
     let currentValue = state.value;
     state.undoStack.push(currentValue);
     currentValue += 1;
     state.value = currentValue;
     state.redoStack = [];
-   commitState();
+    commitState();
 }
 
 function decrement() {
