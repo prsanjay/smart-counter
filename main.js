@@ -29,6 +29,7 @@ function decrement() {
 }
 
 function resetState() {
+    clearTimeout(timerId);
     state = {value: 0, undoStack: [], redoStack: [], lastActionAt: null}
     localStorage.setItem("state", JSON.stringify(state));
     renderValue();
@@ -38,16 +39,20 @@ function undo() {
     let currentValue = state.value;
     state.redoStack.push(currentValue);
     let prevValue = state.undoStack.pop();
-    state.value = prevValue == undefined ? currentValue : prevValue;
-    commitState();
+    if (prevValue !== undefined) {
+        state.value = prevValue
+        commitState();
+    }
 }
 
 function redo() {
     let currentValue = state.value;
     state.undoStack.push(currentValue);
     let val = state.redoStack.pop();
-    state.value = val == undefined ? currentValue : val;
-    commitState();
+    if (val !== undefined) {
+        state.value = val
+        commitState();
+    }
 }
 
 function commitState() {
